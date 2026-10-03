@@ -9,6 +9,11 @@ permissions:
   id-token: write       # Required for OIDC
   contents: read        # To read repo content
 
+# One Terraform run at a time (state locking is disabled in the backend)
+concurrency:
+  group: terraform-state
+  cancel-in-progress: false
+
 jobs:
   CICD:
     runs-on: ubuntu-latest

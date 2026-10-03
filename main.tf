@@ -16,8 +16,9 @@ terraform {
     bucket       = "sctp-tfstate-ce13"
     key          = "alex_s3/alex-coach17-terraform.tfstate"
     region       = "us-east-1"
-    use_lockfile = true
-
+    # S3 lockfiles disabled: bucket policy denies s3:DeleteObject for students,
+    # so Terraform can create the .tflock but never release it.
+    use_lockfile = false
   }
 
   required_version = ">= 1.10.0"
