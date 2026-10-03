@@ -97,7 +97,7 @@ module "ecs" {
 module "github_oidc_bootstrap" {
   source                     = "./github-oidc-bootstrap"
   github_repository_username = "alexongmac"
-  github_repository_name     = "Coach_17_Infra_Deploy"
+  github_repository_names    = ["Coach_17_Infra_Deploy", "Coach_17_App_Deploy"]
   github_oidc_role_name      = "${local.name_prefix}-github-oidc-role"
 }
 

@@ -13,9 +13,15 @@ data "aws_iam_policy_document" "github_trust" {
     }
 
     condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repository_username}*/${var.github_repository_name}*:*"]
+      values   = [for name in var.github_repository_names : "repo:${var.github_repository_username}/${name}:*"]
     }
   }
 }
@@ -63,9 +69,9 @@ variable "github_repository_username" {
   type        = string
 }
 
-variable "github_repository_name" {
-  description = "GitHub repository name"
-  type        = string
+variable "github_repository_names" {
+  description = "GitHub repository names allowed to assume the role"
+  type        = list(string)
 }
 
 variable "github_oidc_role_name" {
