@@ -38,6 +38,21 @@ resource "aws_iam_role_policy_attachment" "deploy" {
   policy_arn = each.value
 }
 
+# ECS module enables service autoscaling; no AWS managed policy above covers it
+resource "aws_iam_role_policy" "app_autoscaling" {
+  name = "application-autoscaling"
+  role = aws_iam_role.github_oidc.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = "application-autoscaling:*"
+      Resource = "*"
+    }]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "iam_full" {
   role       = aws_iam_role.github_oidc.name
   policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
